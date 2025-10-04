@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: applight
+  labels:
+    app: applight
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: applight
+  template:
+    metadata:
+      labels:
+        app: applight
+    spec:
+      containers:
+        - name: applight
+          image: 336578185725.dkr.ecr.us-east-2.amazonaws.com/applight:latest
+          ports:
+            - name: http
+              containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: applight
+  labels:
+    app: applight
+spec:
+  selector:
+    app: applight
+  ports:
+    - name: http
+      port: 8080  
+      targetPort: 8080
+  type: LoadBalancer
